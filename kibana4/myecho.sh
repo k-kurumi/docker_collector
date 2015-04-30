@@ -1,7 +1,8 @@
 #!/bin/bash
 
-env | sort
+env
 
+# kibana4_1       | KIBANA_VERSION=4.0.2
 # kibana_1        | ELASTICSEARCH_1_ENV_ELASTICSEARCH_VERSION=1.5.1
 # kibana_1        | ELASTICSEARCH_1_ENV_JAVA_DEBIAN_VERSION=7u75-2.5.4-2
 # kibana_1        | ELASTICSEARCH_1_ENV_JAVA_VERSION=7u75
@@ -46,7 +47,7 @@ env | sort
 # kibana_1        | ELASTICSEARCH_PORT_9300_TCP_PROTO=tcp
 
 
-cat << __EOL__ > /data/kibana-4.0.2-linux-x64/config/kibana.yml
+cat << __EOL__ > /data/kibana-${KIBANA_VERSION}-linux-x64/config/kibana.yml
 # Kibana is served by a back end server. This controls which port to use.
 port: 5601
 
@@ -118,8 +119,4 @@ __EOL__
 
 
 echo "start kibana4"
-./kibana-4.0.2-linux-x64/bin/kibana
-
-
-#echo "start nc server"
-#while true; do ( echo "HTTP/1.0 200 Ok"; echo; echo "Hello World" ) | nc -l 8000; [ $? != 0 ] && break; done
+./kibana-${KIBANA_VERSION}-linux-x64/bin/kibana

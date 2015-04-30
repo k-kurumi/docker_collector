@@ -1,6 +1,6 @@
 #!/bin/bash
 
-env | sort
+env
 
 # kibana_1        | ELASTICSEARCH_1_ENV_ELASTICSEARCH_VERSION=1.5.1
 # kibana_1        | ELASTICSEARCH_1_ENV_JAVA_DEBIAN_VERSION=7u75-2.5.4-2
@@ -45,42 +45,21 @@ env | sort
 # kibana_1        | ELASTICSEARCH_PORT_9300_TCP_PORT=9300
 # kibana_1        | ELASTICSEARCH_PORT_9300_TCP_PROTO=tcp
 
+
+# NOTE dockerホスト宛にforwardするとき、sender側はheartbeat_type tcpを指定すること
 cat << __EOL__ > /data/fluentd.conf
 <source>
   @type forward
   @id forward_input
-  @label @raw
+  @label @cf
 </source>
 
-<source>
-  @type syslog
-  @id cf
-  @label @syslog
-  tag cf
-  port 51400
-  bind 0.0.0.0
-#  protocol_type tcp
-</source>
-
-<label @raw>
+<label @cf>
 <match **>
   @type copy
-
   <store>
     @type stdout
   </store>
-
-</match>
-</label>
-
-<label @syslog>
-<match **>
-  @type copy
-
-  <store>
-    @type stdout
-  </store>
-
   <store>
     @type elasticsearch
     type_name fluentd
@@ -91,14 +70,9 @@ cat << __EOL__ > /data/fluentd.conf
     port ${ELASTICSEARCH_PORT_9200_TCP_PORT}
     flush_interval 10s
   </store>
-
 </match>
 </label>
 __EOL__
 
-
+echo "start fluentd"
 fluentd --config /data/fluentd.conf
-
-
-#echo "start nc server"
-#while true; do ( echo "HTTP/1.0 200 Ok"; echo; echo "Hello World" ) | nc -l 8000; [ $? != 0 ] && break; done

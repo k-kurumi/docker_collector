@@ -4,6 +4,7 @@ elasticsearch:
     - /etc/localtime:/etc/localtime:ro
   ports:
     - "9200:9200"
+
 kibana4:
   build: ./kibana4
   volumes:
@@ -12,6 +13,7 @@ kibana4:
     - elasticsearch
   ports:
     - "5601:5601"
+
 fluentd:
   build: ./fluentd
   volumes:
@@ -20,4 +22,3 @@ fluentd:
     - elasticsearch
   ports:
     - "24224:24224"
-    - "51400:51400"

@@ -7,6 +7,8 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL C
 ENV LC_ALL en_US.UTF-8
 
+ENV KIBANA_VERSION=4.0.2
+
 WORKDIR /data
 
 RUN \
@@ -15,9 +17,9 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 RUN \
-  wget https://download.elastic.co/kibana/kibana/kibana-4.0.2-linux-x64.tar.gz && \
-  tar zxvf kibana-4.0.2-linux-x64.tar.gz && \
-  rm kibana-4.0.2-linux-x64.tar.gz
+  wget https://download.elastic.co/kibana/kibana/kibana-${KIBANA_VERSION}-linux-x64.tar.gz && \
+  tar zxvf kibana-${KIBANA_VERSION}-linux-x64.tar.gz && \
+  rm kibana-${KIBANA_VERSION}-linux-x64.tar.gz
 
 COPY myecho.sh /data/myecho.sh
 RUN chmod +x myecho.sh

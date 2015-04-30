@@ -4,7 +4,7 @@ WORKDIR /data
 
 RUN \
   apt-get update && \
-  apt-get install -yq wget curl netcat && \
+  apt-get install -yq curl && \
   rm -rf /var/lib/apt/lists/*
 
 RUN \
@@ -14,10 +14,6 @@ RUN \
 COPY myecho.sh /data/myecho.sh
 RUN chmod +x myecho.sh
 
-# recv syslog
-EXPOSE 51400
-
-# recv forward
 EXPOSE 24224
 
 CMD ./myecho.sh
